@@ -1,32 +1,152 @@
-# Prerequisites
-*.d
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <cmath>
+#include <map>
+using namespace std;
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+int g;
 
-# Precompiled Headers
-*.gch
-*.pch
+float printMedian(vector<int>& med)
+{
+    sort(med.begin(), med.end());
+    int n = med.size();
+    if(n%2==0)
+    {
+       float g = (med[(n-1)/2] + med[(n/2)])/2;
+       return g;
+    }
+    else
+    {
+        float g = med[n/2];
+        return g;
+    }
+}
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+int printMode(vector<int>& mod)
+{
+    map<int, int> frequency;
+    int maxFrequency = 0;
+    int mode;
+    for (int num : mod) {
+        frequency[num]++;
+        if (frequency[num] > maxFrequency) {
+            maxFrequency = frequency[num];
+            mode = num;
+        }
+    }
+    g = maxFrequency;
+    return mode;
+}
 
-# Fortran module files
-*.mod
-*.smod
+float printQ1(vector<int>& Q1)
+{
+    sort(Q1.begin(), Q1.end());
+    int n = Q1.size();
+    int nsize = n/2;
+    if (nsize % 2 != 0)
+    {
+        return Q1[nsize/2];
+    }
+    return (Q1[(nsize-1)/2] + Q1[nsize/2])/2.0;
+}
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+float printQ3(vector<int>& Q3)
+{
+    sort(Q3.begin(), Q3.end());
+    int n = Q3.size();
+    int nsize = n/2;
+    if(nsize % 2 != 0)
+    {
+        return Q3[nsize + nsize/2];
+    }
+    return (Q3[nsize + (nsize-1)/2] + Q3[nsize + nsize/2])/2.0;
+}
 
-# Executables
-*.exe
-*.out
-*.app
+float printP10(vector<int>& P10)
+{
+    sort(P10.begin(), P10.end());
+    int n = P10.size();
+    float g = 0.10*(n-1);
+    int x = round(g);
+    float d;
+    float r;
+    if(x < g)
+    {
+        r = abs(x-g);
+        x = x+1;
+        d = r*(P10[x] - P10[g]);
+    }
+    else if(x>g)
+    {
+        r = x-g;
+        //cout<<P10[0]<<endl;
+        d = r*(P10[x] - P10[g]);
+    }
+    else
+    {
+        d = 0;
+    }
+    float h = P10[g]+d;
+    return h;
+}
+
+float printP95(vector<int>& P95)
+{
+    sort(P95.begin(), P95.end());
+    int n = P95.size();
+    float g = 0.95*(n-1);
+    int x = round(g);
+    float d;
+    float r;
+    if(x < g)
+    {
+        r = abs(x-g);
+        x = x+1;
+        d = r*(P95[x] - P95[g]);
+    }
+    else if(x>g)
+    {
+        r = x-g;
+        cout<<P95[0]<<endl;
+        d = r*(P95[x] - P95[g]);
+    }
+    else
+    {
+        d = 0;
+    }
+    float h = P95[g]+d;
+    return h;
+}
+
+int main()
+{
+    int size;
+    float median, Q1, Q3, P10, P95, mode;
+    
+    vector<int> data = {
+        11, 14, 15, 15, 16, 16, 17, 18, 19, 21, 25, 36,
+        12, 14, 15, 15, 16, 16, 17, 18, 19, 21, 25, 39,
+        13, 14, 15, 15, 16, 17, 17, 18, 20, 22, 26, 43,
+        13, 14, 15, 15, 16, 17, 17, 18, 20, 22, 26, 46,
+        13, 14, 15, 16, 16, 17, 17, 18, 20, 22, 27, 50,
+        13, 14, 15, 16, 16, 17, 17, 19, 20, 23, 27, 54,
+        13, 14, 15, 16, 16, 17, 18, 19, 20, 23, 29, 59,
+        13, 15, 15, 16, 16, 17, 18, 19, 20, 23, 30, 67,
+        14, 15, 15, 16, 16, 17, 18, 19, 21, 24, 31,
+        14, 15, 15, 16, 16, 17, 18, 19, 21, 24, 34,
+    };
+    //int n = data.size();
+    median = printMedian(data);
+    cout<<"Median of the given date is equal to = "<<median<<'.'<<endl;
+    mode = printMode(data);
+    cout<<"Mode of the given date is equal to = "<<mode<<" and it appears "<<g<<" times."<<endl;
+    Q1 = printQ1(data);
+    cout<<"Q1 of the given date is equal to = "<<Q1<<'.'<<endl;
+    Q3 = printQ3(data);
+    cout<<"Q3 of the given date is equal to = "<<Q3<<'.'<<endl;
+    P10 = printP10(data);
+    cout<<"P10 of the given date is equal to = "<<P10<<'.'<<endl;
+    P95 = printP95(data);
+    cout<<"P95 of the given date is equal to = "<<P95<<'.'<<endl;
+}
